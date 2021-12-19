@@ -1,1 +1,1 @@
-from common_exception import CommonException
+from .common_exception import CommonException
