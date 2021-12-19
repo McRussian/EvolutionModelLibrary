@@ -49,3 +49,44 @@ class ConstantNode (BaseNode):
             return False
         return self.__value == other()
 
+
+class ArgumentNode (BaseNode):
+
+    def __init__(self, name: str = None):
+        if name is None:
+            raise NodeException(1, "Argument Name's is Unknown")
+        if type(name) != str:
+            raise NodeException(3, 'Name Argument is not String')
+
+        self.__name = name
+        self.__value = None
+
+    def __str__(self)-> str:
+        return self.__name
+
+    def GetName(self)-> str:
+        return self.__name
+
+    def SetValue(self, value: float):
+        if type(value) == float or type(value) == int:
+            self.__value = float(value)
+        else:
+            raise NodeException(5, 'Value for Argument is Uncorrect')
+
+    def __call__(self, **kwargs)-> float:
+        if self.__value is None:
+            raise NodeException(9, 'Value for Argument is Unknown')
+
+        if len(kwargs) == 0:
+            return self.__value
+
+        if self.__name in kwargs.keys():
+            self.SetValue(kwargs[self.__name])
+            return self.__value
+        else:
+            raise NodeException(11, 'Uncorrect Name Argument for Call')
+
+    def __eq__(self, other):
+        if type(other) != ArgumentNode:
+            raise NodeException(13, 'Compare witch Uncorrect Type')
+        return self.__name == other.__name
