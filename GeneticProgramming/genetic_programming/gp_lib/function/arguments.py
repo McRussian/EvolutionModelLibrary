@@ -1,13 +1,13 @@
 __author__ = "McRussian Andrey"
 # -*- coding: utf8 -*-
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from .node import ArgumentNode
 from GeneticProgramming.genetic_programming.gp_lib import ListArgumentsException, NodeException
 
-class ListArguments:
 
+class ListArguments:
     def __init__(self):
         self._args: Dict[str, ArgumentNode] = dict()
 
@@ -28,7 +28,7 @@ class ListArguments:
 
         self._args[name].SetValue(value)
 
-    def GetListNameArguments(self) -> list:
+    def GetListNameArguments(self) -> List[str]:
         return list(self._args.keys())
 
     def GetValueArgument(self, name) -> float:
@@ -38,34 +38,33 @@ class ListArguments:
         try:
             value = self._args[name]()
         except NodeException as err:
-            raise ListArgumentsException(23, 'Unknown Value for Argument ' + name)
+            raise ListArgumentsException(23, f'Unknown Value for Argument {name}')
 
         return value
 
     def __len__(self) -> int:
         return len(self._args)
 
-    def __call__(self, args = None) -> list:
-        if args is None:
-            ls = []
-            for item in self._args.values():
-                ls.append(item())
-            return ls
-
-        if type(args) != ListArguments:
+    def __call__(self, args = None) -> Dict[str, float]:
+        if not args is None and type(args) != ListArguments:
             raise ListArgumentsException(13, 'Unknown Type Arguments')
 
-        values = list()
-        ls = args.GetListNameArguments()
-        for name in self._args.keys():
-            if name not in ls:
-                raise ListArgumentsException(15, 'Not Value for Argument ' + name)
+        if not args is None:
+            ls = args.GetListNameArguments()
+            for name, arg in self._args.items():
+                try:
+                    if name in ls:
+                        self._args[name].SetValue(args.GetValueArgument(name))
+                except NodeException:
+                    raise ListArgumentsException(31, f"Can't Set Value of Argument {name}")
 
+        values: Dict[str, float] = dict()
+
+        for name, arg in self._args.items():
             try:
-                self._args[name].SetValue(args.GetValueArgument(name))
-                values.append(self._args[name]())
-            except ArgumentNodeException as err:
-                raise ListArgumentsException(17, 'No Value for Argument ' + name)
+                values[name] = self._args[name]()
+            except NodeException:
+                raise ListArgumentsException(17, f'No Value for Argument {name}')
 
         return values
 
@@ -73,5 +72,4 @@ class ListArguments:
         if type(other) != ListArguments:
             raise ListArgumentsException(11, 'Uncorrect Type Argument to Compare')
 
-        return set(self._args.keys()).difference(set(other._args.keys())) == set() \
-               and set(other._args.keys()).difference(set(self._args.keys())) == set()
+        return set(self._args.keys()) == set(other._args.keys())

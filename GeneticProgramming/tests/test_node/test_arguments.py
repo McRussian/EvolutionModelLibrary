@@ -86,12 +86,22 @@ class TestArguments(TestCase):
     def test_Call(self):
         A = ListArguments()
         self.assertTrue(len(A()) == 0)
+        self.assertRaises(ListArgumentsException, A, 12)
+        self.assertRaises(ListArgumentsException, A, [1, 2, 3])
 
         alph = 'qwerty'
         for char in alph:
             arg = ArgumentNode(char)
             A.AppendArgument(arg=arg)
+
+        self.assertRaises(ListArgumentsException, A)
+        values = dict()
+        for char in alph:
             A.SetValueArgument(char, ord(char))
+            values[char] = ord(char)
+
+        self.assertTrue(type(A()) == dict)
+        self.assertEqual(values, A())
 
         D = ListArguments()
         for char in 'qwerty' + 'dkdxzvxc':
@@ -99,16 +109,20 @@ class TestArguments(TestCase):
             D.AppendArgument(arg=arg)
             D.SetValueArgument(char, ord(char))
 
-        self.assertEqual(list(map(ord, list(alph))), A(D))
-        self.assertTrue(type(A(D)) == list)
-        self.assertTrue(type(A()) == list)
+        self.assertTrue(type(A(D)) == dict)
+        self.assertEqual(values, A(D))
 
         D = ListArguments()
         for char in 'dkdxzvxc':
             arg = ArgumentNode(char)
             D.AppendArgument(arg=arg)
             D.SetValueArgument(char, ord(char))
+        self.assertEqual(values, A(D))
 
-        self.assertRaises(ListArgumentsException, A, D)
-        self.assertRaises(ListArgumentsException, A, 12)
-        self.assertRaises(ListArgumentsException, A, [1, 2, 3])
+        D = ListArguments()
+        for char in 'qwerty':
+            arg = ArgumentNode(char)
+            D.AppendArgument(arg=arg)
+            D.SetValueArgument(char, ord(char) + 10)
+            values[char] = ord(char) + 10
+        self.assertEqual(values, A(D))
