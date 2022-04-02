@@ -2,6 +2,7 @@ from unittest import TestCase
 from GeneticProgramming.genetic_programming.gp_lib import ConstantNode
 from GeneticProgramming.genetic_programming import NodeException
 
+
 class TestConstantNode(TestCase):
     def testValidConstant(self):
         const = ConstantNode(12)
@@ -22,7 +23,6 @@ class TestConstantNode(TestCase):
         a = ConstantNode()
         self.assertGreaterEqual(a(), -50)
         self.assertLessEqual(a(), 50)
-
 
     def testValidDefineConstant(self):
         c = ConstantNode('ddd')

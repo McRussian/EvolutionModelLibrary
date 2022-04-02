@@ -1,16 +1,19 @@
 __author__ = "McRussian Andrey"
+
 # -*- coding: utf8 -*-
 
 from random import random
 
 from GeneticProgramming.genetic_programming.gp_lib import NodeException
 
+
 class BaseNode:
-    '''
+    """
     Базовый класс для узла дерева-функции
     Любой объект-наследник должен определить методы
     __str__, __call__
-    '''
+    """
+
     def __call__(self, *args, **kwargs):
         raise NotImplemented
 
@@ -18,13 +21,13 @@ class BaseNode:
         raise NotImplemented
 
 
-class ConstantNode (BaseNode):
-    '''
+class ConstantNode(BaseNode):
+    """
     Объект этого класса представляет собой константу
     Значение константы задается при создании, либо в виде аргумента
     либо случайное число (-50, 50)
     Объект-функтор, при вызове его как функции возвращает значение константы
-    '''
+    """
 
     def __init__(self, value: float = None):
         if value is None:
@@ -45,13 +48,12 @@ class ConstantNode (BaseNode):
         return str(self.__value)
 
     def __eq__(self, other):
-        if (type(other) != ConstantNode):
+        if type(other) != ConstantNode:
             return False
         return self.__value == other()
 
 
-class ArgumentNode (BaseNode):
-
+class ArgumentNode(BaseNode):
     def __init__(self, name: str = None):
         if name is None:
             raise NodeException(1, "Argument Name's is Unknown")
@@ -61,19 +63,19 @@ class ArgumentNode (BaseNode):
         self.__name = name
         self.__value = None
 
-    def __str__(self)-> str:
+    def __str__(self) -> str:
         return self.__name
 
-    def GetName(self)-> str:
+    def get_name(self) -> str:
         return self.__name
 
-    def SetValue(self, value: float):
+    def set_value(self, value: float):
         if type(value) == float or type(value) == int:
             self.__value = float(value)
         else:
-            raise NodeException(5, 'Value for Argument is Uncorrect')
+            raise NodeException(5, 'Value for Argument is Uncorrected')
 
-    def __call__(self, **kwargs)-> float:
+    def __call__(self, **kwargs) -> float:
         if self.__value is None:
             raise NodeException(9, 'Value for Argument is Unknown')
 
@@ -81,12 +83,12 @@ class ArgumentNode (BaseNode):
             return self.__value
 
         if self.__name in kwargs.keys():
-            self.SetValue(kwargs[self.__name])
+            self.set_value(kwargs[self.__name])
             return self.__value
         else:
-            raise NodeException(11, 'Uncorrect Name Argument for Call')
+            raise NodeException(11, 'Uncorrected Name Argument for Call')
 
     def __eq__(self, other):
         if type(other) != ArgumentNode:
-            raise NodeException(13, 'Compare witch Uncorrect Type')
+            raise NodeException(13, 'Compare witch Uncorrected Type')
         return self.__name == other.__name

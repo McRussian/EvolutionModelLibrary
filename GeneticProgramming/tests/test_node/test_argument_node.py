@@ -2,6 +2,7 @@ from unittest import TestCase
 from GeneticProgramming.genetic_programming.gp_lib import ArgumentNode
 from GeneticProgramming.genetic_programming import NodeException
 
+
 class TestArgumentNode(TestCase):
     def test_SetArgument(self):
         A = ArgumentNode('x')
@@ -21,17 +22,17 @@ class TestArgumentNode(TestCase):
 
     def test_SetValue(self):
         A = ArgumentNode('x')
-        A.SetValue(12)
+        A.set_value(12)
         self.assertEqual(12, A())
 
         B = ArgumentNode('x')
-        self.assertRaises(NodeException, B.SetValue, ['qqq'])
+        self.assertRaises(NodeException, B.set_value, ['qqq'])
         self.assertRaises(NodeException, B)
 
     def test_Call(self):
         A = ArgumentNode('x')
         self.assertRaises(NodeException, A)
-        A.SetValue(12)
+        A.set_value(12)
         self.assertEqual(12, A())
         self.assertEqual(11, A(x=11))
         self.assertEqual(11, A(y=12, x=11, t=1))
