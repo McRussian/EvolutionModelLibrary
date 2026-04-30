@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "evoml"
+version = "0.1.0"
+description = "Evolutionary Modeling Language — DSL for evolutionary computation"
+requires-python = ">=3.11"
+dependencies = [
+    "lark>=1.2",
+]
+
+[project.scripts]
+evo = "evoml.cli.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
