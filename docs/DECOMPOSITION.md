@@ -22,7 +22,7 @@
 | Шаг | Содержимое | Проверка | Готово |
 |-----|-----------|----------|--------|
 | 1.1 | `GeneType[T]` ABC; `CrossoverStrategy` ABC и все реализации с подиерархиями | импорт без ошибок | [x] |
-| 1.2 | `PrimitiveGeneType`: `IntGene`, `FloatGene` | диапазон, мутация не выходит за границы | [ ] |
+| 1.2 | `PrimitiveGeneType`: `IntGene`, `FloatGene` | диапазон, мутация не выходит за границы | [x] |
 | 1.3 | `BoolGene`, `CategoricalGene` | flip-мутация, элемент из options | [ ] |
 | 1.4 | `PermutationGene` | OX-crossover сохраняет все элементы без повторов | [ ] |
 | 1.5 | `BitStringGene` | flip-мутация, длина не меняется | [ ] |
