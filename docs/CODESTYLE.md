@@ -117,15 +117,24 @@ def mutate(self, value: int, rng: Random = _DEFAULT_RNG) -> int:
 - Иерархия от `EvoMLError` (база)
 - `raise ... from err` допускается для цепочки исключений
 - Сообщения исключений — на **английском** (с прицелом на локализацию)
+- Иерархия плоская: `GeneTypeError`, `ConfigError`, `EvaluationError` — не плодить подклассы под каждый случай
+- Различать ошибки одного класса по `code`, не по типу
+- Коды — только через константы из соответствующего класса (`GeneTypeCodes`, `ConfigCodes`, `EvaluationCodes`), не строками напрямую
 - Бросать конкретный подтип, не базовый `EvoMLError`
+- При добавлении нового кода — добавить константу в соответствующий класс кодов
 
 ```python
-raise InvalidBoundsError(f"lo must be < hi, got lo={lo}, hi={hi}")
+raise GeneTypeError(GeneTypeCodes.INVALID_BOUNDS, f"lo must be < hi, got lo={lo}, hi={hi}")
 
 try:
     ...
-except ValueError as e:
-    raise InvalidBoundsError("...") from e
+except ValueError as err:
+    raise GeneTypeError(GeneTypeCodes.INVALID_BOUNDS, "...") from err
+```
+
+Логирование:
+```python
+logger.error("[%s] %s", error.code, error.message)
 ```
 
 ---

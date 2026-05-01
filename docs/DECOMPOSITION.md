@@ -11,9 +11,9 @@
 
 | Шаг | Содержимое | Проверка | Готово |
 |-----|-----------|----------|--------|
-| 0.1 | Иерархия исключений: `EvoMLError`, `GeneTypeError`, `ConfigError`, `EvaluationError` | импорт без ошибок | [ ] |
-| 0.2 | `ErrorCode` StrEnum; `GeneTypeCodes`, `ConfigCodes`, `EvaluationCodes` | коды уникальны, работают как строки | [ ] |
-| 0.3 | `common.py`: `DEFAULT_RNG` и общие утилиты | импорт без ошибок | [ ] |
+| 0.1 | Иерархия исключений: `EvoMLError`, `GeneTypeError`, `ConfigError`, `EvaluationError` | импорт без ошибок | [x] |
+| 0.2 | `ErrorCode` StrEnum; `GeneTypeCodes`, `ConfigCodes`, `EvaluationCodes` | коды уникальны, работают как строки | [x] |
+| 0.3 | `common.py`: `DEFAULT_RNG` и общие утилиты | импорт без ошибок | [x] |
 
 ---
 
